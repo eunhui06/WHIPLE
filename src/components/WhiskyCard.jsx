@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 
 function WhiskyCard({ whisky }) {
+  const linkId = whisky.originalId || whisky.id;
+
   return (
-    <Link to={`/detail/${whisky.id}`} className="group block h-full">
+    <Link to={`/detail/${linkId}`} className="group block h-full">
       {/* 카드 전체 박스 */}
       <div className="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 p-4 h-full flex flex-col items-center">
         
