@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query"; // 👈 React Query 가져오기
 import { fetchWhiskies } from "../data/mockData";
 import WhiskyCard from "../components/WhiskyCard";
