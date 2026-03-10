@@ -1,43 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
-const configuredApiUrl = import.meta.env.VITE_API_URL;
-const isSecurePage = typeof window !== "undefined" && window.location.protocol === "https:";
-const apiBaseUrl = isSecurePage && configuredApiUrl?.startsWith("http://")
-  ? "/api"
-  : configuredApiUrl || "/api";
+import { apiBaseUrl, createInitialWhiskyFormData, flavorKeys, normalizeWhisky } from "../data/mockData";
 
 function Admin() {
-  // 1. 상태 관리: 등록용 데이터(formData)와 조회용 데이터(whiskyList)
-  const [formData, setFormData] = useState({
-    name: "",
-    image_URL: "",
-    brand_id: 0,
-    distillery_id: 0,
-    region_id: 0,
-    whiskey_type_id: 0,
-    price_band_id: 0,
-    peat: 0,
-    smoke: 0,
-    sweet: 0,
-    fruity: 0,
-    sherry: 0,
-    spicy: 0,
-    woody: 0,
-    body: 0,
-    category: "Single Malt",
-    min_price: 0,
-    desc: ""
-  });
+  const [formData, setFormData] = useState(createInitialWhiskyFormData);
 
   const [whiskyList, setWhiskyList] = useState([]); // 서버에서 받아온 위스키 목록
 
   // 2. 서버에서 위스키 목록을 받아오는 함수 (GET)
   const fetchWhiskyList = async () => {
     try {
-      const response = await axios.get(`${apiBaseUrl}/admin/whiskies`)
-      // 백엔드 응답 구조에 맞춰 데이터 설정 (보통 response.data.items 또는 response.data)
-      setWhiskyList(response.data.items || response.data);
+      const response = await axios.get(`${apiBaseUrl}/admin/whiskies`);
+      const items = Array.isArray(response.data?.items) ? response.data.items : response.data;
+      setWhiskyList(Array.isArray(items) ? items.map(normalizeWhisky) : []);
     } catch (error) {
       console.error("목록 불러오기 실패:", error);
     }
@@ -61,15 +36,8 @@ function Admin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 숫자로 보내야 하는 필드 변환
     const dataToSend = {
       ...formData,
-      brand_id: Number(formData.brand_id),
-      distillery_id: Number(formData.distillery_id),
-      region_id: Number(formData.region_id),
-      whiskey_type_id: Number(formData.whiskey_type_id),
-      price_band_id: Number(formData.price_band_id),
-      min_price: Number(formData.min_price),
       peat: Number(formData.peat),
       smoke: Number(formData.smoke),
       sweet: Number(formData.sweet),
@@ -84,14 +52,8 @@ function Admin() {
       const response = await axios.post(`${apiBaseUrl}/admin/whiskies/registration`, dataToSend);
       if (response.status === 200 || response.status === 201) {
         alert(`${formData.name} **위스키** 가 등록되었습니다! 🥃`);
-        
-        // 등록 성공 후 폼 초기화
-        setFormData({
-          name: "", image_URL: "", brand_id: 0, distillery_id: 0, region_id: 0, 
-          whiskey_type_id: 0, price_band_id: 0, peat: 0, smoke: 0, sweet: 0, 
-          fruity: 0, sherry: 0, spicy: 0, woody: 0, body: 0, 
-          category: "Single Malt", min_price: 0, desc: ""
-        });
+
+        setFormData(createInitialWhiskyFormData());
 
         fetchWhiskyList();
       }
@@ -137,10 +99,46 @@ function Admin() {
                 <label className="block text-sm font-bold text-gray-700 mb-2">이미지 URL</label>
                 <input type="text" name="image_URL" value={formData.image_URL} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="http://..." />
               </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">브랜드</label>
+                <input type="text" name="brand" value={formData.brand} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="브랜드명 입력" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">제조사</label>
+                <input type="text" name="manufacturer" value={formData.manufacturer} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="제조사 입력" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">생산 지역</label>
+                <input type="text" name="region" value={formData.region} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="지역 입력" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">알코올 도수</label>
+                <input type="text" name="abv" value={formData.abv} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="예: 40%" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">가격</label>
+                <input type="text" name="price" value={formData.price} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="예: 89000원" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">카테고리</label>
+                <input type="text" name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="예: Single Malt" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-2">설명</label>
+              <textarea
+                name="desc"
+                value={formData.desc}
+                onChange={handleChange}
+                rows="4"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                placeholder="위스키 설명 입력"
+              />
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-gray-100">
-              {['peat', 'smoke', 'sweet', 'fruity', 'sherry', 'spicy', 'woody', 'body'].map((note) => (
+              {flavorKeys.map((note) => (
                 <div key={note}>
                   <label className="block text-xs font-bold text-gray-500 mb-1 capitalize">{note}</label>
                   <input type="number" name={note} min="0" max="10" value={formData[note]} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-blue-500" />
@@ -164,6 +162,7 @@ function Admin() {
                   <th className="p-4 text-sm font-bold text-gray-600 border-b">ID</th>
                   <th className="p-4 text-sm font-bold text-gray-600 border-b">위스키 이름</th>
                   <th className="p-4 text-sm font-bold text-gray-600 border-b">브랜드</th>
+                  <th className="p-4 text-sm font-bold text-gray-600 border-b">카테고리</th>
                   <th className="p-4 text-sm font-bold text-gray-600 border-b">관리</th>
                 </tr>
               </thead>
@@ -173,7 +172,8 @@ function Admin() {
                     <tr key={whisky.id} className="hover:bg-gray-50 border-b last:border-0 transition-colors">
                       <td className="p-4 text-sm text-gray-600">{whisky.id}</td>
                       <td className="p-4 text-sm font-medium text-gray-800">{whisky.name}</td>
-                      <td className="p-4 text-sm text-gray-600">{whisky.brand_name || "정보 없음"}</td>
+                      <td className="p-4 text-sm text-gray-600">{whisky.brand || "정보 없음"}</td>
+                      <td className="p-4 text-sm text-gray-600">{whisky.category || "정보 없음"}</td>
                       <td className="p-4 text-sm">
                         <button
                           type="button"
@@ -187,7 +187,7 @@ function Admin() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" className="p-10 text-center text-gray-400">등록된 위스키가 없습니다.</td>
+                    <td colSpan="5" className="p-10 text-center text-gray-400">등록된 위스키가 없습니다.</td>
                   </tr>
                 )}
               </tbody>

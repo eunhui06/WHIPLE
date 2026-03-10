@@ -100,12 +100,59 @@ const apiBaseUrl = isSecurePage && configuredApiUrl?.startsWith("http://")
   ? "/api"
   : configuredApiUrl || "/api";
 
-const normalizeWhisky = (item) => ({
-  ...item,
-  thumbnailUrl: item.image_URL,
-  category: item.whiskey_type_name || "기타",
-  rating: item.rating ?? null,
+const flavorKeys = ["peat", "smoke", "sweet", "fruity", "sherry", "spicy", "woody", "body"];
+
+const createInitialWhiskyFormData = () => ({
+  name: "",
+  image_URL: "",
+  brand: "",
+  manufacturer: "",
+  region: "",
+  abv: "",
+  price: "",
+  desc: "",
+  category: "",
+  peat: 0,
+  smoke: 0,
+  sweet: 0,
+  fruity: 0,
+  sherry: 0,
+  spicy: 0,
+  woody: 0,
+  body: 0,
 });
+
+const normalizeWhisky = (item) => {
+  const imageUrl = item?.image_URL || item?.imageUrl || item?.thumbnailUrl || "";
+  const category = item?.category || item?.whiskey_type_name || "기타";
+  const brand = item?.brand || item?.brand_name || "";
+  const manufacturer = item?.manufacturer || item?.distillery_name || "";
+  const region = item?.region || item?.region_name || "";
+  const abv = item?.abv || item?.alcohol_by_volume || "";
+  const price = item?.price ?? item?.min_price ?? "";
+  const desc = item?.desc || item?.description || "";
+  const flavors = flavorKeys.reduce((acc, key) => {
+    const value = item?.[key];
+    if (typeof value === "number") {
+      acc[key] = value;
+    }
+    return acc;
+  }, {});
+
+  return {
+    ...item,
+    image_URL: imageUrl,
+    thumbnailUrl: imageUrl,
+    category,
+    brand,
+    manufacturer,
+    region,
+    abv,
+    price: price === null || price === undefined ? "" : String(price),
+    desc,
+    flavors,
+  };
+};
 
 export const fetchWhiskies = async ({ page, category }) => {
   const response = await fetch(`${apiBaseUrl}/whiskies?page=0&size=1000`);
@@ -125,12 +172,14 @@ export const fetchWhiskies = async ({ page, category }) => {
   const limit = 12;
   const startIndex = (page - 1) * limit;
   const slicedData = filteredData.slice(startIndex, startIndex + limit);
+  const categories = Array.from(new Set(items.map((item) => item.category).filter(Boolean)));
 
   return {
     content: slicedData,
     totalCount: filteredData.length,
-    totalPages: Math.ceil(filteredData.length / limit)
+    totalPages: Math.ceil(filteredData.length / limit),
+    categories,
   };
 };
 
-export { apiBaseUrl, normalizeWhisky };
+export { apiBaseUrl, createInitialWhiskyFormData, flavorKeys, normalizeWhisky };

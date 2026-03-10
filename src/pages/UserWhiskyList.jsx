@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { apiBaseUrl, normalizeWhisky } from "../data/mockData";
 
 function UserWhiskyList() {
   // 1. 서버에서 받아올 위스키 목록을 저장할 빈 배열
@@ -7,11 +8,11 @@ function UserWhiskyList() {
   // 2. 화면이 처음 켜질 때 한 번만 실행되는 마법의 훅!
   useEffect(() => {
     // GET 요청은 method나 body가 필요 없어! 주소만 부르면 끝.
-    fetch('/api/whiskies')
+    fetch(`${apiBaseUrl}/whiskies?page=0&size=1000`)
       .then(response => response.json())
       .then(data => {
         console.log("불러온 위스키 목록:", data);
-        setWhiskies(data.items || []); // API 응답의 items만 사용
+        setWhiskies((data.items || []).map(normalizeWhisky));
       })
       .catch(error => console.error("목록 불러오기 실패:", error));
   }, []); // 🚨 이 빈 배열([])을 꼭 넣어줘야 무한 반복 요청을 막을 수 있어!
@@ -38,14 +39,13 @@ function UserWhiskyList() {
               {/* 위스키 상세 정보 */}
               <div className="p-5">
                 <div className="text-xs font-bold text-blue-600 mb-1">
-                  {whisky.whiskey_type_name || "Single Malt"}
+                  {whisky.category || "기타"}
                 </div>
                 <h2 className="text-lg font-bold text-gray-800 mb-2 truncate">
                   {whisky.name}
                 </h2>
                 <div className="text-gray-600 font-medium">
-                  {/* 가격을 천 단위로 콤마(,) 찍어서 예쁘게 보여주기 */}
-                  {whisky.min_price ? `${whisky.min_price.toLocaleString()}원 ~` : "가격 미정"}
+                  {whisky.price || "가격 미정"}
                 </div>
               </div>
             </div>

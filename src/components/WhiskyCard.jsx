@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function WhiskyCard({ whisky }) {
   const linkId = whisky.originalId || whisky.id;
   const imageUrl = whisky.image_URL || whisky.thumbnailUrl;
-  const subtitle = whisky.brand_name || whisky.category || whisky.whiskey_type_name;
+  const subtitle = whisky.brand || whisky.brand_name || whisky.category;
 
   return (
     <Link to={`/detail/${linkId}`} className="group block h-full">

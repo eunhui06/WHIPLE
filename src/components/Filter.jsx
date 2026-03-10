@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router-dom"; // 👈 이 줄이 꼭 있어야 합니다!
 
-function Filter() {
+function Filter({ categories = [] }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentCategory = searchParams.get("category") || "전체";
 
-  const categories = ["전체", "Single Malt", "Blended", "Bourbon", "Rye"];
+  const categoryOptions = ["전체", ...categories];
 
   const handleFilterClick = (cat) => {
     // ⭐️ 버튼을 누르면 URL을 변경하는 핵심 코드
@@ -19,7 +19,7 @@ function Filter() {
     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full">
       <h2 className="text-lg font-bold mb-6 text-gray-800">카테고리</h2>
       <ul className="space-y-2">
-        {categories.map((cat, index) => (
+        {categoryOptions.map((cat, index) => (
           <li key={index}>
             <button 
               onClick={() => handleFilterClick(cat)} // 👈 클릭 이벤트 연결
