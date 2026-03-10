@@ -29,7 +29,7 @@ function Admin() {
   // 2. 서버에서 위스키 목록을 받아오는 함수 (GET)
   const fetchWhiskyList = async () => {
     try {
-      const response = await axios.get('http://3.39.177.180/api/admin/whiskies');
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/admin/whiskies`)
       // 백엔드 응답 구조에 맞춰 데이터 설정 (보통 response.data.items 또는 response.data)
       setWhiskyList(response.data.items || response.data);
     } catch (error) {
@@ -75,7 +75,7 @@ function Admin() {
     };
 
     try {
-      const response = await axios.post('http://3.39.177.180/api/admin/whiskies/registration', dataToSend);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/admin/whiskies/registration`, dataToSend);
       if (response.status === 200 || response.status === 201) {
         alert(`${formData.name} **위스키** 가 등록되었습니다! 🥃`);
         

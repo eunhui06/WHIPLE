@@ -65,30 +65,7 @@ export const whiskyData = [
     details: { brand: "Glenfiddich", manufacturer: "William Grant & Sons", region: "Speyside", type: "Single Malt", abv: "40%" },
     flavors: { peat: 0, smoke: 1, sweet: 4, fruity: 4, sherry: 3, spicy: 2, woody: 2, body: 3 }
   },
-  // 5. 라가불린 (피트 괴물)
-  {
-    id: 5,
-    name: "라가불린 16년",
-    thumbnailUrl: "https://images.unsplash.com/photo-1605218457335-ee1f391a27e0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    price: 180000,
-    category: "Single Malt",
-    rating: 4.7,
-    desc: "아일라 섬의 제왕. 강렬한 피트 향과 스모키함 뒤에 숨겨진 달콤함이 매력적입니다.",
-    details: { brand: "Lagavulin", manufacturer: "Diageo", region: "Islay", type: "Single Malt", abv: "43%" },
-    flavors: { peat: 5, smoke: 5, sweet: 2, fruity: 1, sherry: 2, spicy: 1, woody: 3, body: 5 }
-  },
-  // 6. 메이커스 마크 (버번)
-  {
-    id: 6,
-    name: "메이커스 마크",
-    thumbnailUrl: "https://images.unsplash.com/photo-1582298270544-79357d605470?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    price: 65000,
-    category: "Bourbon",
-    rating: 4.0,
-    desc: "붉은 왁스 봉인이 특징인 입문용 버번. 호밀 대신 밀을 사용하여 부드럽고 달콤한 바닐라 향이 강합니다.",
-    details: { brand: "Maker's Mark", manufacturer: "Beam Suntory", region: "Kentucky (USA)", type: "Bourbon", abv: "45%" },
-    flavors: { peat: 0, smoke: 0, sweet: 5, fruity: 2, sherry: 0, spicy: 2, woody: 4, body: 3 }
-  },
+ 
   // 7. 히비키 (일본 위스키)
   {
     id: 7,
@@ -101,78 +78,7 @@ export const whiskyData = [
     details: { brand: "Hibiki", manufacturer: "Suntory", region: "Japan", type: "Blended Whisky", abv: "43%" },
     flavors: { peat: 0, smoke: 0, sweet: 4, fruity: 4, sherry: 2, spicy: 1, woody: 3, body: 2 }
   },
-  // 8. 탈리스커
-  {
-    id: 8,
-    name: "탈리스커 10년",
-    thumbnailUrl: "https://images.unsplash.com/photo-1613564998393-2708b5f36611?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    price: 90000,
-    category: "Single Malt",
-    rating: 4.3,
-    desc: "스카이 섬의 거친 파도 같은 맛. 짭짤한 바다 소금 내음과 후추 같은 스파이시함이 특징입니다.",
-    details: { brand: "Talisker", manufacturer: "Diageo", region: "Isle of Skye", type: "Single Malt", abv: "45.8%" },
-    flavors: { peat: 3, smoke: 4, sweet: 2, fruity: 2, sherry: 1, spicy: 5, woody: 2, body: 4 }
-  },
-  // 9. 와일드 터키 (버번)
-  {
-    id: 9,
-    name: "와일드 터키 101",
-    thumbnailUrl: "https://images.unsplash.com/photo-1565538421884-28a1c93a0b5a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    price: 60000,
-    category: "Bourbon",
-    rating: 4.1,
-    desc: "강력한 50.5도의 타격감. 진한 카라멜과 오크 향, 스파이시한 피니시가 남자의 버번임을 증명합니다.",
-    details: { brand: "Wild Turkey", manufacturer: "Campari Group", region: "Kentucky (USA)", type: "Bourbon", abv: "50.5%" },
-    flavors: { peat: 0, smoke: 2, sweet: 3, fruity: 1, sherry: 0, spicy: 5, woody: 5, body: 5 }
-  },
-  // 10. 야마자키
-  {
-    id: 10,
-    name: "야마자키 12년",
-    thumbnailUrl: "https://images.unsplash.com/photo-1608655009893-2415d8623b3c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    price: 350000,
-    category: "Single Malt",
-    rating: 4.6,
-    desc: "일본 싱글몰트의 자존심. 미즈나라 오크통 특유의 향 냄새와 열대 과일의 풍미가 조화롭습니다.",
-    details: { brand: "Yamazaki", manufacturer: "Suntory", region: "Japan", type: "Single Malt", abv: "43%" },
-    flavors: { peat: 0, smoke: 0, sweet: 4, fruity: 5, sherry: 2, spicy: 2, woody: 4, body: 3 }
-  },
-  // 11. 제임슨 (아이리쉬)
-  {
-    id: 11,
-    name: "제임슨 스탠다드",
-    thumbnailUrl: "https://images.unsplash.com/photo-1582298270544-79357d605470?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    price: 35000,
-    category: "Blended",
-    rating: 3.8,
-    desc: "세 번 증류하여 부드러움의 극치. 하이볼로 마시기에 가장 완벽한 아이리쉬 위스키입니다.",
-    details: { brand: "Jameson", manufacturer: "Pernod Ricard", region: "Ireland", type: "Irish Whiskey", abv: "40%" },
-    flavors: { peat: 0, smoke: 0, sweet: 3, fruity: 3, sherry: 0, spicy: 1, woody: 1, body: 2 }
-  },
-  // 12. 버팔로 트레이스 (버번)
-  {
-    id: 12,
-    name: "버팔로 트레이스",
-    thumbnailUrl: "https://images.unsplash.com/photo-1598155523122-38423bb4d6c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    price: 55000,
-    category: "Bourbon",
-    rating: 4.2,
-    desc: "버번의 교과서. 바닐라, 흑설탕, 오크의 밸런스가 뛰어나며 가성비가 훌륭합니다.",
-    details: { brand: "Buffalo Trace", manufacturer: "Sazerac", region: "Kentucky (USA)", type: "Bourbon", abv: "45%" },
-    flavors: { peat: 0, smoke: 1, sweet: 4, fruity: 2, sherry: 0, spicy: 3, woody: 4, body: 3 }
-  },
-  // 13. 라프로익 (병원 냄새)
-  {
-    id: 13,
-    name: "라프로익 10년",
-    thumbnailUrl: "https://images.unsplash.com/photo-1605218457335-ee1f391a27e0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    price: 130000,
-    category: "Single Malt",
-    rating: 4.4,
-    desc: "호불호의 끝판왕. 소독약, 요오드, 젖은 흙 냄새가 강렬하지만 한번 빠지면 헤어나올 수 없습니다.",
-    details: { brand: "Laphroaig", manufacturer: "Beam Suntory", region: "Islay", type: "Single Malt", abv: "40%" },
-    flavors: { peat: 5, smoke: 4, sweet: 2, fruity: 1, sherry: 1, spicy: 2, woody: 3, body: 4 }
-  },
+  
   // 14. 로얄 살루트
   {
     id: 14,
@@ -185,18 +91,7 @@ export const whiskyData = [
     details: { brand: "Royal Salute", manufacturer: "Pernod Ricard", region: "Scotland", type: "Blended Scotch", abv: "40%" },
     flavors: { peat: 1, smoke: 1, sweet: 4, fruity: 5, sherry: 3, spicy: 1, woody: 2, body: 3 }
   },
-  // 15. 아드벡
-  {
-    id: 15,
-    name: "아드벡 10년",
-    thumbnailUrl: "https://images.unsplash.com/photo-1613564998393-2708b5f36611?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    price: 140000,
-    category: "Single Malt",
-    rating: 4.6,
-    desc: "가장 완벽한 피트 위스키. 강렬한 스모키함 속에서도 레몬 라임의 상큼함이 터져 나옵니다.",
-    details: { brand: "Ardbeg", manufacturer: "LVMH", region: "Islay", type: "Single Malt", abv: "46%" },
-    flavors: { peat: 5, smoke: 5, sweet: 2, fruity: 3, sherry: 0, spicy: 2, woody: 2, body: 4 }
-  },
+  
 ];
 
 // 가짜 서버 API 함수 (수정 없음 - 기존 로직 그대로 사용)
