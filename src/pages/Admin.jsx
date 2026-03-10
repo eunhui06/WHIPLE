@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const apiBaseUrl = import.meta.env.VITE_API_URL || "/api";
+const configuredApiUrl = import.meta.env.VITE_API_URL;
+const isSecurePage = typeof window !== "undefined" && window.location.protocol === "https:";
+const apiBaseUrl = isSecurePage && configuredApiUrl?.startsWith("http://")
+  ? "/api"
+  : configuredApiUrl || "/api";
 
 function Admin() {
   // 1. 상태 관리: 등록용 데이터(formData)와 조회용 데이터(whiskyList)
