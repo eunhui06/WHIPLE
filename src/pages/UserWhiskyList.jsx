@@ -11,7 +11,7 @@ function UserWhiskyList() {
       .then(response => response.json())
       .then(data => {
         console.log("불러온 위스키 목록:", data);
-        setWhiskies(data); // 뜯은 데이터를 state에 쏙 저장
+        setWhiskies(data.items || []); // API 응답의 items만 사용
       })
       .catch(error => console.error("목록 불러오기 실패:", error));
   }, []); // 🚨 이 빈 배열([])을 꼭 넣어줘야 무한 반복 요청을 막을 수 있어!

@@ -94,26 +94,43 @@ export const whiskyData = [
   
 ];
 
-// 가짜 서버 API 함수 (수정 없음 - 기존 로직 그대로 사용)
-export const fetchWhiskies = async ({ page, category }) => {
-  // 1. 네트워크 딜레이 (0.5초)
-  await new Promise((resolve) => setTimeout(resolve, 500));
+const configuredApiUrl = import.meta.env.VITE_API_URL;
+const isSecurePage = typeof window !== "undefined" && window.location.protocol === "https:";
+const apiBaseUrl = isSecurePage && configuredApiUrl?.startsWith("http://")
+  ? "/api"
+  : configuredApiUrl || "/api";
 
-  // 2. 필터링 로직
-  let filteredData = whiskyData;
-  if (category && category !== "전체") {
-    filteredData = whiskyData.filter((item) => item.category === category);
+const normalizeWhisky = (item) => ({
+  ...item,
+  thumbnailUrl: item.image_URL,
+  category: item.whiskey_type_name || "기타",
+  rating: item.rating ?? null,
+});
+
+export const fetchWhiskies = async ({ page, category }) => {
+  const response = await fetch(`${apiBaseUrl}/whiskies?page=0&size=1000`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch whiskies");
   }
 
-  // 3. 페이지네이션 로직
-  const limit = 12; // 한 페이지당 12개
+  const data = await response.json();
+  const items = Array.isArray(data.items) ? data.items.map(normalizeWhisky) : [];
+
+  let filteredData = items;
+  if (category && category !== "전체") {
+    filteredData = items.filter((item) => item.category === category);
+  }
+
+  const limit = 12;
   const startIndex = (page - 1) * limit;
   const slicedData = filteredData.slice(startIndex, startIndex + limit);
 
-  // 4. 결과 반환
   return {
     content: slicedData,
     totalCount: filteredData.length,
     totalPages: Math.ceil(filteredData.length / limit)
   };
 };
+
+export { apiBaseUrl, normalizeWhisky };

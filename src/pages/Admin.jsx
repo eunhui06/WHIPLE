@@ -101,6 +101,25 @@ function Admin() {
     }
   };
 
+  const handleDelete = async (id, name) => {
+    const shouldDelete = window.confirm(`${name} 위스키를 삭제하시겠습니까?`);
+
+    if (!shouldDelete) {
+      return;
+    }
+
+    try {
+      const response = await axios.delete(`${apiBaseUrl}/admin/whiskies/${id}`);
+
+      if (response.status === 200 || response.status === 204) {
+        fetchWhiskyList();
+      }
+    } catch (error) {
+      console.error("삭제 에러:", error);
+      alert("삭제에 실패했습니다.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
       <div className="max-w-4xl mx-auto space-y-10">
@@ -156,7 +175,13 @@ function Admin() {
                       <td className="p-4 text-sm font-medium text-gray-800">{whisky.name}</td>
                       <td className="p-4 text-sm text-gray-600">{whisky.brand_name || "정보 없음"}</td>
                       <td className="p-4 text-sm">
-                        <button className="text-blue-600 font-bold hover:underline">수정</button>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(whisky.id, whisky.name)}
+                          className="text-red-600 font-bold hover:underline"
+                        >
+                          삭제
+                        </button>
                       </td>
                     </tr>
                   ))

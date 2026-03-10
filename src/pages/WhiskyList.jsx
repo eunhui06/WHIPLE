@@ -1,6 +1,6 @@
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query"; // 👈 React Query 가져오기
-import { fetchWhiskies } from "../data/mockData";
+import { apiBaseUrl, normalizeWhisky } from "../data/mockData";
 import WhiskyCard from "../components/WhiskyCard";
 import Filter from "../components/Filter";
 import Pagination from "../components/Pagination";
@@ -15,7 +15,25 @@ function WhiskyList() {
   // useQuery로 데이터 요청하기
   const { data, isLoading, isError } = useQuery({
     queryKey: ["whiskies", category, page], // 이 키가 바뀌면 자동으로 재요청됨
-    queryFn: () => fetchWhiskies({ category, page }), // 실제 요청 함수
+    queryFn: async () => {
+      const response = await fetch(`${apiBaseUrl}/whiskies?page=${page - 1}&size=12`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch whiskies");
+      }
+
+      const result = await response.json();
+      const items = Array.isArray(result.items) ? result.items.map(normalizeWhisky) : [];
+      const filteredItems = category === "전체"
+        ? items
+        : items.filter((item) => item.category === category);
+
+      return {
+        content: filteredItems,
+        totalCount: result.total_elements ?? filteredItems.length,
+        totalPages: result.total_pages ?? 1,
+      };
+    },
   });
 
   // 로딩 UI (스켈레톤: 회색 박스 깜빡임)

@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 
 function WhiskyCard({ whisky }) {
   const linkId = whisky.originalId || whisky.id;
+  const imageUrl = whisky.image_URL || whisky.thumbnailUrl;
+  const subtitle = whisky.brand_name || whisky.category || whisky.whiskey_type_name;
 
   return (
     <Link to={`/detail/${linkId}`} className="group block h-full">
@@ -17,16 +19,14 @@ function WhiskyCard({ whisky }) {
         {/* aspect-square: 정사각형 비율 유지, object-contain: 사진 안 잘리게 다 보여줌 */}
         <div className="w-full aspect-[3/4] bg-gray-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
           <img 
-            src={whisky.thumbnailUrl} 
+            src={imageUrl || "https://via.placeholder.com/300?text=No+Image"}
             alt={whisky.name} 
             className="h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
           />
         </div>
 
-        {/* 3. 대표 평점 */}
-        <div className="mt-auto flex items-center justify-center bg-yellow-50 px-3 py-1 rounded-full border border-yellow-100">
-          <span className="text-yellow-500 text-sm mr-1">★</span>
-          <span className="text-gray-700 font-bold text-sm">{whisky.rating}</span>
+        <div className="mt-auto text-sm font-medium text-gray-500 text-center">
+          {subtitle || "정보 없음"}
         </div>
 
       </div>
