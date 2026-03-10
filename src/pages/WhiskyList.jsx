@@ -21,7 +21,7 @@ function WhiskyList() {
   // 로딩 UI (스켈레톤: 회색 박스 깜빡임)
   if (isLoading) {
     return (
-      <LayoutWrapper>
+      <LayoutWrapper categories={[]}>
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-pulse">
           {/* 회색 박스 12개 보여주기 */}
           {Array(8).fill(0).map((_, i) => (
@@ -35,7 +35,7 @@ function WhiskyList() {
   // 에러 UI
   if (isError) {
     return (
-      <LayoutWrapper>
+      <LayoutWrapper categories={[]}>
         <div className="text-center py-20 text-red-500">
           데이터를 불러오는 중 문제가 발생했습니다. 😥
         </div>
@@ -45,7 +45,7 @@ function WhiskyList() {
 
   // 성공 UI
   return (
-    <LayoutWrapper>
+    <LayoutWrapper categories={data?.categories || []}>
       <div className="mb-6 pb-2 border-b border-gray-200 flex justify-between items-end">
         <h1 className="text-2xl font-bold text-gray-800">
           {category === "전체" ? "🥃 전체 위스키" : `🥃 ${category}`}
@@ -79,14 +79,14 @@ function WhiskyList() {
 }
 
 // 레이아웃 중복을 줄이기 위한 내부 컴포넌트
-function LayoutWrapper({ children }) {
+function LayoutWrapper({ children, categories }) {
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="w-full px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col md:flex-row gap-8">
           <aside className="md:w-60 flex-shrink-0 hidden md:block">
             <div className="sticky top-24">
-              <Filter categories={data?.categories || []} />
+              <Filter categories={categories} />
             </div>
           </aside>
           <main className="flex-1">{children}</main>
